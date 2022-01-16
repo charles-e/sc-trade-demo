@@ -45,7 +45,7 @@ export default function NavigationFrame({ children }) {
       <AppBar position="static">
         <Toolbar>
           <Typography variant="h6" className={classes.title} component="h1">
-            Solana SPL Token Wallet
+            Safecoin Market Demo
           </Typography>
           <WalletSelector />
           <NetworkSelector />

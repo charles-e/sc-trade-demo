@@ -42,6 +42,20 @@ export class Wallet {
     return this.account.publicKey;
   }
 
+  // jeebus -  just frickin sign transactions locally
+  // no, this is not for production!!!!!
+  // no need for auto approve!!!!
+  async signTransaction(transaction) {
+    const data = transaction.serializeMessage();
+    const signature = nacl.sign.detached(data, this.account.secretKey);
+    transaction.addSignature(this.account.publicKey, signature);
+    return transaction;
+  }
+
+  async signAllTransactions(transactions) {
+    return transactions.map((t) => this.signTransaction(t));
+  }
+
   getTokenPublicKeys = async () => {
     let accounts = await getOwnedTokenAccounts(
       this.connection,
@@ -136,7 +150,7 @@ export function refreshWalletPublicKeys(wallet) {
 
 export function useBalanceInfo(publicKey) {
   let [accountInfo, accountInfoLoaded] = useAccountInfo(publicKey);
-    let { mint, owner, amount } = accountInfo?.owner.equals(TOKEN_PROGRAM_ID)
+  let { mint, owner, amount } = accountInfo?.owner.equals(TOKEN_PROGRAM_ID)
     ? parseTokenAccountData(accountInfo.data)
     : {};
   let [mintInfo, mintInfoLoaded] = useAccountInfo(mint);

@@ -14,7 +14,19 @@ import LoadingIndicator from './components/LoadingIndicator';
 import { SnackbarProvider } from 'notistack';
 import PopupPage from './pages/PopupPage';
 import LoginPage from './pages/LoginPage';
+import { MARKETS_LIST } from '@project-serum/serum';
+import MarketLoadButton from './components/MarketLoadButton';
+import TabGuts from './components/TabGuts';
 
+function MarketComponent() {
+  return (
+    <>
+      <h1>Hello</h1>
+      {MARKETS_LIST.map((m) => m.name)}
+      <MarketLoadButton></MarketLoadButton>
+    </>
+  );
+}
 export default function App() {
   // TODO: add toggle for dark mode
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
@@ -62,5 +74,10 @@ function PageContents() {
   if (window.opener) {
     return <PopupPage opener={window.opener} />;
   }
-  return <WalletPage />;
+  return (
+    <>
+      <WalletPage />
+      <TabGuts />
+    </>
+  );
 }
