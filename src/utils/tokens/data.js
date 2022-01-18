@@ -1,4 +1,4 @@
-import * as BufferLayout from 'buffer-layout';
+import * as BufferLayout from '@solana/buffer-layout';
 import { PublicKey } from '@safecoin/web3.js';
 
 export const ACCOUNT_LAYOUT = BufferLayout.struct([
@@ -15,7 +15,6 @@ export const MINT_LAYOUT = BufferLayout.struct([
 ]);
 
 export function parseTokenAccountData(data) {
-  
   let { mint, owner, amount } = ACCOUNT_LAYOUT.decode(data);
   return {
     mint: new PublicKey(mint),

@@ -1,4 +1,4 @@
-import * as BufferLayout from 'buffer-layout';
+import * as BufferLayout from '@solana/buffer-layout';
 import {
   PublicKey,
   SYSVAR_RENT_PUBKEY,
@@ -63,7 +63,7 @@ export function initializeMint({
   ];
   const useFreezeAuth = !!freezeAuthority;
   const fillerAuth = mint;
-  const freezeAuth = (useFreezeAuth ? freezeAuthority: fillerAuth).toBuffer();
+  const freezeAuth = (useFreezeAuth ? freezeAuthority : fillerAuth).toBuffer();
   const mintInstruction = {
     initializeMint: {
       decimals,

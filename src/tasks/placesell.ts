@@ -12,7 +12,6 @@ import {
 } from '@safecoin/web3.js';
 
 import { BN, Wallet } from "@project-serum/anchor";
-import { transfer, WRAPPED_SAFE_MINT } from '@project-serum/serum/lib/token-instructions';
 import { Market, OpenOrders } from '@project-serum/serum';
 import { getAccountKeys } from '../utils/tsutil';
 import { sendTransaction } from '../utils/send';
@@ -34,7 +33,7 @@ let prog = Keypair.fromSecretKey(
 console.log(prog.publicKey.toBase58());
 
 
-export default async function placeBuy(connection: Connection, market: Market, wallet: Wallet) {
+export default async function placeSell(connection: Connection, market: Market, wallet: Wallet) {
 
 
   console.log("market", market.dump());
@@ -60,9 +59,9 @@ export default async function placeBuy(connection: Connection, market: Market, w
 
   let order = {
     owner: wallet.publicKey,
-    payer: owner_info.quote,
-    side: ('buy' as any),
-    price: 1.1,
+    payer: owner_info.base,
+    side: ('sell' as any),
+    price: 1.0,
     size: 0.001,
     orderType: ('limit' as any),
     clientId: new BN(1),

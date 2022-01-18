@@ -82,7 +82,7 @@ export default function AddTokenDialog({ open, onClose }) {
         {tokenAccountCost ? (
           <DialogContentText>
             Add a token to your wallet. This will cost{' '}
-            {feeFormat.format(tokenAccountCost / LAMPORTS_PER_SAFE)} Solana.
+            {feeFormat.format(tokenAccountCost / LAMPORTS_PER_SAFE)} Safecoin.
           </DialogContentText>
         ) : (
           <LoadingIndicator />
@@ -185,7 +185,7 @@ function TokenListItem({
                 target="_blank"
                 rel="noopener"
                 href={
-                  `https://explorer.solana.com/account/${mintAddress}` +
+                  `https://explorer.safecoin.org/account/${mintAddress}` +
                   urlSuffix
                 }
               >

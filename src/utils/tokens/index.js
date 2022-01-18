@@ -10,25 +10,24 @@ import bs58 from 'bs58';
 import base64js from 'base64-js';
 import { PublicKey, SystemProgram, Transaction } from '@safecoin/web3.js';
 
-function bufEq (buf1, buf2)
-{
-    if (buf1.byteLength != buf2.byteLength) return false;
-    var dv1 = new Int8Array(buf1);
-    var dv2 = new Int8Array(buf2);
-    for (var i = 0 ; i != buf1.byteLength ; i++)
-    {
-        if (dv1[i] != dv2[i]) return false;
-    }
-    return true;
+function bufEq(buf1, buf2) {
+  if (buf1.byteLength != buf2.byteLength) return false;
+  var dv1 = new Int8Array(buf1);
+  var dv2 = new Int8Array(buf2);
+  for (var i = 0; i != buf1.byteLength; i++) {
+    if (dv1[i] != dv2[i]) return false;
+  }
+  return true;
 }
 export async function getOwnedTokenAccounts(connection, publicKey) {
   let filters = getOwnedAccountsFilters(publicKey);
   let resp = await connection._rpcRequest('getProgramAccounts', [
     TOKEN_PROGRAM_ID.toBase58(),
     {
-      encoding: "base64",
+      encoding: 'base64',
       commitment: connection.commitment,
-      filters,      filters,
+      filters,
+      filters,
     },
   ]);
   if (resp.error) {
@@ -43,15 +42,16 @@ export async function getOwnedTokenAccounts(connection, publicKey) {
     .map(({ pubkey, account: { data, executable, owner, lamports } }) => {
       let buf = Buffer.from(data[0], 'base64');
       return {
-      publicKey: new PublicKey(pubkey),
-      accountInfo: {
-        data: buf,
+        publicKey: new PublicKey(pubkey),
+        accountInfo: {
+          data: buf,
 
-        executable,
-        owner: new PublicKey(owner),
-        lamports,
-      },
-    }})
+          executable,
+          owner: new PublicKey(owner),
+          lamports,
+        },
+      };
+    })
     .filter(({ accountInfo }) => {
       // TODO: remove this check once mainnet is updated
       return filters.every((filter) => {
@@ -59,12 +59,11 @@ export async function getOwnedTokenAccounts(connection, publicKey) {
           return accountInfo.data.length === filter.dataSize;
         } else if (filter.memcmp) {
           let filterBytes = bs58.decode(filter.memcmp.bytes);
-          let aiData = accountInfo.data
-          .slice(
+          let aiData = accountInfo.data.slice(
             filter.memcmp.offset,
             filter.memcmp.offset + filterBytes.length,
           );
-          return bufEq(aiData,filterBytes);
+          return bufEq(aiData, filterBytes);
         }
         return false;
       });
@@ -93,9 +92,7 @@ export async function createAndInitializeMint({
     decimals,
     mintAuthority: owner.publicKey,
   });
-  transaction.add(
-    imInst
-  );
+  transaction.add(imInst);
   let signers = [owner, mint];
   if (amount > 0) {
     transaction.add(
@@ -135,7 +132,8 @@ export async function createAndInitializeTokenAccount({
   mintPublicKey,
   newAccount,
 }) {
-  let transaction = SystemProgram.createAccount({
+  let transaction = new Transaction();
+  let ca_ix = SystemProgram.createAccount({
     fromPubkey: payer.publicKey,
     newAccountPubkey: newAccount.publicKey,
     lamports: await connection.getMinimumBalanceForRentExemption(
@@ -144,6 +142,7 @@ export async function createAndInitializeTokenAccount({
     space: ACCOUNT_LAYOUT.span,
     programId: TOKEN_PROGRAM_ID,
   });
+  transaction.add(ca_ix);
   transaction.add(
     initializeAccount({
       account: newAccount.publicKey,

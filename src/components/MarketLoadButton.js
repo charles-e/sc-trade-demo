@@ -6,11 +6,7 @@ import TextField from '@material-ui/core/TextField';
 
 import { Market, MARKETS_LIST } from '@project-serum/serum';
 import { Keypair } from '@safecoin/web3.js';
-import {
-  refreshWalletPublicKeys,
-  useBalanceInfo,
-  useWallet,
-} from '../utils/wallet';
+import { useWallet } from '../utils/wallet';
 
 import { red } from '@material-ui/core/colors';
 
@@ -102,8 +98,6 @@ export default function MarketLoadButton() {
     setMarket(market);
     console.log(market);
   };
-
-  const markets = MARKETS_LIST;
 
   const [marketAddr, setMarketAddr] = useState(MARKETS_LIST[0].address);
   return (
