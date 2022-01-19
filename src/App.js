@@ -14,7 +14,7 @@ import LoadingIndicator from './components/LoadingIndicator';
 import { SnackbarProvider } from 'notistack';
 import PopupPage from './pages/PopupPage';
 import LoginPage from './pages/LoginPage';
-import { MARKETS_LIST } from '@project-serum/serum';
+import { MARKETS_LIST } from '@project-serum/serumx';
 import MarketLoadButton from './components/MarketLoadButton';
 import TabGuts from './components/TabGuts';
 

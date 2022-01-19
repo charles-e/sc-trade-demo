@@ -1,4 +1,4 @@
-import { Market } from '@project-serum/serum';
+import { Market } from '@project-serum/serumx';
 import {
   Keypair,
   Connection,

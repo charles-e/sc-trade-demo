@@ -12,12 +12,12 @@ import {
 } from '@safecoin/web3.js';
 
 import { BN, Wallet } from "@project-serum/anchor";
-import { transfer, WRAPPED_SAFE_MINT } from '@project-serum/serum/lib/token-instructions';
-import { Market, OpenOrders } from '@project-serum/serum';
+import { transfer, WRAPPED_SAFE_MINT } from '@project-serum/serumx/lib/token-instructions';
+import { Market, OpenOrders } from '@project-serum/serumx';
 import { getAccountKeys } from '../utils/tsutil';
 import { sendTransaction } from '../utils/send';
 import SERUM from '../KEYS/SERUM-2.json';
-import { OrdersAccountParams } from '@project-serum/serum/lib/market';
+import { OrdersAccountParams } from '@project-serum/serumx/lib/market';
 
 const walletPath = process.env.SAFE_WALLET;
 

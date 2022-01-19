@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import Button from '@material-ui/core/Button';
 import placeBuy from '../tasks/placebuy'
 import { useWallet } from '../utils/wallet';
-import { Market, MARKETS_LIST } from '@project-serum/serum';
+import { Market, MARKETS_LIST } from '@project-serum/serumx';
 import { Keypair } from '@safecoin/web3.js';
 import SERUM from '../KEYS/SERUM-2.json';
 import { makeStyles } from '@material-ui/core/styles';

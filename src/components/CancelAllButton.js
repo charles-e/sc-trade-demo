@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 
-import { Market, MARKETS_LIST } from '@project-serum/serum';
 import { Keypair, Transaction } from '@safecoin/web3.js';
 import { useSendTransaction } from '../utils/notifications';
 import { signTransaction } from '../utils/send';
@@ -36,7 +35,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function CancelAllButton() {
+export default function CancelAllButton(props) {
+  const market = props.market;
   const classes = useStyles();
 
   const wallet = useWallet();
@@ -44,13 +44,6 @@ export default function CancelAllButton() {
 
   const cancelAll = async (e) => {
     const connection = wallet.connection;
-    let market = await Market.load(
-      wallet.connection,
-      MARKETS_LIST[0].address,
-      {},
-      serum.publicKey,
-    );
-
     let myOrders = await market.loadOrdersForOwner(
       connection,
       wallet.publicKey,

@@ -7,7 +7,7 @@ import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import { makeStyles } from '@material-ui/core';
 
 import SERUM from '../KEYS/SERUM-2.json';
-import { Market, OpenOrders, MARKETS_LIST } from '@project-serum/serum';
+import { Market, OpenOrders, MARKETS_LIST } from '@project-serum/serumx';
 import { Keypair, Transaction } from '@safecoin/web3.js';
 import { useWallet } from '../utils/wallet';
 import { useSendTransaction } from '../utils/notifications';
@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function OrderForm() {
+export default function OrderForm(props) {
   let classes = useStyles();
   const [tradeSide, setTradeSide] = useState('buy');
   const [isLimit, setIsLimit] = useState(true);
@@ -34,6 +34,8 @@ export default function OrderForm() {
   const wallet = useWallet();
   const [busy, setBusy] = useState(false);
   const [sendTransaction, sending] = useSendTransaction();
+
+  const market = props.market;
 
   const changePrice = (ev) => {
     setPrice(ev.target.value);
@@ -56,14 +58,7 @@ export default function OrderForm() {
 
     let signers = [];
 
-    const marketAddr = MARKETS_LIST[0].address;
     setBusy(true);
-    let market = await Market.load(
-      wallet.connection,
-      marketAddr,
-      {},
-      serum.publicKey,
-    );
 
     // depending on what side is which token wallet we will "pay" from
     let token_accounts =
@@ -117,6 +112,7 @@ export default function OrderForm() {
       clientId: new BN(Math.random()),
       openOrdersAddressKey: ooAccountAddr,
     };
+
     const order_ix = await market.makePlaceOrderInstruction(connection, order);
 
     const con_ix = await market.makeConsumeEventsInstruction(

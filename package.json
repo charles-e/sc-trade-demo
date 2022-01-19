@@ -10,7 +10,7 @@
     "@material-ui/core": "latest",
     "@project-serum/associated-token": "file:../serum-ts/packages/associated-token",
     "@project-serum/pool": "file:../serum-ts/packages/pool",
-    "@project-serum/serum":"file:../serum-ts/packages/serum",
+    "@project-serum/serumx":"file:../serum-ts/packages/serum",
     "@safecoin/safe-token": "^0.1.7",
     "@safecoin/safe-wallet-adapter": "file:../safe-wallet-adapter",
     "@safecoin/spl-name-service": "file:../safecoin-program-library/name-service/js",

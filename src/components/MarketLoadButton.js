@@ -4,7 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 
-import { Market, MARKETS_LIST } from '@project-serum/serum';
+import { Market, MARKETS_LIST } from '@project-serum/serumx';
 import { Keypair } from '@safecoin/web3.js';
 import { useWallet } from '../utils/wallet';
 
@@ -82,7 +82,7 @@ function MarketInfo(props) {
   }
 }
 
-export default function MarketLoadButton() {
+export default function MarketLoadButton(props) {
   const classes = useStyles();
   const wallet = useWallet();
 
