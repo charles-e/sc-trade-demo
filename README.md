@@ -1,3 +1,3 @@
 # Safecoin Trade Demo
 
-A way to show off what serum can do on safecoin w/out extreme ui picky-ness.
+Shows what safecoin trade will be capable of when a real ui person works on it.
