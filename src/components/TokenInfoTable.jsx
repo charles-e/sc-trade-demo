@@ -8,7 +8,6 @@ import TableRow from '@material-ui/core/TableRow';
 import { TOKEN_MINTS_LIST } from '@project-serum/serumx';
 import { getMultipleSolanaAccounts } from '../utils/send';
 import { useWallet } from '../utils/wallet';
-import { mnemonicToSeedSync } from 'bip39';
 import { parseMintData } from '../utils/tokens/data';
 import BN from 'bn.js';
 
@@ -57,7 +56,7 @@ export default function TokenInfoTable(props) {
     }
 
     getTokens();
-  }, []);
+  }, [props.market, props.global]);
 
   const headers = headerNames.map((n) => <TableCell>{n}</TableCell>);
 

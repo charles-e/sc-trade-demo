@@ -99,22 +99,17 @@ export default function MarketTabs() {
         scrollButtons="auto"
         aria-label="scrollable auto tabs example"
       >
-        <Tab label="Ignore" {...a11yProps(0)} />
-        <Tab label="Buy Something" {...a11yProps(1)} />
+        <Tab label="My Orders" {...a11yProps(0)} />
         <Tab label="OrderBook" {...a11yProps(2)} />
         <Tab label="OrderForm" {...a11yProps(3)} />
         <Tab label="Do Cancelling/Settling" {...a11yProps(4)} />
         <Tab label="Token Info" {...a11yProps(5)} />
         <Tab label="Market Info" {...a11yProps(6)} />
-        <Tab label="MyOrders" {...a11yProps(7)} />
 
       </Tabs>
     </Box>
     <TabPanel value={value} index={0}>
       <MyOrderTable market ={market} global={infoIdx} />
-    </TabPanel>
-    <TabPanel value={value} index={1}>
-      <BuyPanel />
     </TabPanel>
     <TabPanel value={value} index={2}>
       <OrderTable market={market} global={infoIdx} updateMarket={handleMarketUpdate}/>
@@ -129,12 +124,11 @@ export default function MarketTabs() {
 
     </TabPanel>
     <TabPanel value={value} index={5}>
-     <TokenInfoTable/>
+     <TokenInfoTable market={market} global={infoIdx}/>
     </TabPanel>
     <TabPanel value={value} index={6}>
       <MarketData market={market} global={infoIdx}/>
     </TabPanel>
-    <TabPanel value={value} index={7}>
-    </TabPanel>
+
   </>);
 }

@@ -86,17 +86,10 @@ function NetworkSelector() {
   const [anchorEl, setAnchorEl] = useState(null);
   const classes = useStyles();
 
-  const networks = [
-    clusterApiUrl('mainnet-beta'),
-    clusterApiUrl('devnet'),
-    clusterApiUrl('testnet'),
-    'http://localhost:8899',
-  ];
+  const networks = [clusterApiUrl('devnet')];
 
   const networkLabels = {
-    [clusterApiUrl('mainnet-beta')]: 'Mainnet Beta',
     [clusterApiUrl('devnet')]: 'Devnet',
-    [clusterApiUrl('testnet')]: 'Testnet',
   };
 
   return (
