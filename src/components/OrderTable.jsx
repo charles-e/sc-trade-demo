@@ -91,7 +91,7 @@ export default function OrderTable(props) {
     getAskRows();
 
     getBidRows();
-  }, [market]);
+  }, [market, props.global]);
 
   return (
     <div>

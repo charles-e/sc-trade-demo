@@ -67,6 +67,7 @@ export default function CancelAllButton(props) {
 
     let serial = signed.serialize();
     sendTransaction(connection.sendRawTransaction(serial), {});
+    props.updateMarket();
   };
 
   return (

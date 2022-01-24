@@ -85,6 +85,7 @@ export default function SettleButton(props) {
 
     let serial = signed.serialize();
     await sendTransaction(connection.sendRawTransaction(serial), {});
+    props.updateMarket();
   }
 
   return (

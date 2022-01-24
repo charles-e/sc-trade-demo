@@ -176,6 +176,7 @@ export default function OrderFormV2(props) {
           { onSuccess: setBusy(false) },
         );
       }
+      props.updateMarket();
       setBusy(false);
     }
   };

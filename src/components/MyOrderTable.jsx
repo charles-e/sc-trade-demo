@@ -80,7 +80,7 @@ export default function MyOrderTable(props) {
     };
 
     getOwnerRows();
-  }, [market]);
+  }, [market, props.global]);
 
   return (
     <div>
