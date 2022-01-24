@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function OrderForm(props) {
+export default function OrderFormV2(props) {
   let classes = useStyles();
   const [tradeSide, setTradeSide] = useState('buy');
   const [isLimit, setIsLimit] = useState(true);
@@ -126,36 +126,8 @@ export default function OrderForm(props) {
       bitchQuit('Price under tick size');
     }
 
+    let txn, signers;
     if (orderOk) {
-      let signers = [];
-
-      setBusy(true);
-
-      let ooAccounts = await market.findOpenOrdersAccountsForOwner(
-        connection,
-        wallet.publicKey,
-        200,
-      );
-      let ooAccountAddr;
-      let txn;
-      if (ooAccounts.length == 0) {
-        console.log('will create Open Orders');
-        const ooAccount = new Keypair();
-        const params = {
-          connection: connection,
-          ownerAddress: wallet.publicKey,
-          programId: serum.publicKey,
-          marketAddress: market.address,
-          newAccountAddress: ooAccount.publicKey,
-        };
-        txn = await OpenOrders.makeCreateOrdersAccountTransaction(params);
-        signers.push(ooAccount);
-        ooAccountAddr = ooAccount.publicKey;
-      } else {
-        txn = new Transaction();
-        ooAccountAddr = ooAccounts[0].address;
-      }
-
       let order = {
         owner: wallet.publicKey,
         payer: token_accounts[0].pubkey, // the debited token account
@@ -163,45 +135,47 @@ export default function OrderForm(props) {
         price: price * 1.0,
         size: size * 1.0,
         orderType: isLimit ? 'limit' : '',
-        clientId: new BN(Math.random()),
-        openOrdersAddressKey: ooAccountAddr,
+        clientId: new BN(Math.random() * 1000, 10),
       };
       console.log(order);
+      let poRes;
       try {
-        const order_ix = await market.makePlaceOrderInstruction(
-          connection,
-          order,
-        );
-        txn.add(order_ix);
+        poRes = await market.makePlaceOrderTransaction(connection, order);
       } catch (e) {
         bitchQuit(e.message);
       }
-      try {
-        const con_ix = await market.makeConsumeEventsInstruction(
-          [ooAccountAddr],
-          3,
-        );
-        txn.add(con_ix);
-      } catch (e) {
-        bitchQuit(e.message);
+      let signed;
+      if (orderOk) {
+        try {
+          signed = await signTransaction({
+            transaction: poRes.txn,
+            wallet: wallet,
+            signers: poRes.sigs,
+            connection: connection,
+          });
+        } catch (e) {
+          bitchQuit(e.message);
+        }
       }
-      let signed = await signTransaction({
-        transaction: txn,
-        wallet: wallet,
-        signers: signers,
-        connection: connection,
-      });
-      let txId = await transmitSignedTransaction({
-        signedTransaction: signed,
-        connection: connection,
-        sendNotification: false,
-      });
+      let txId;
+      if (orderOk) {
+        try {
+          txId = await transmitSignedTransaction({
+            signedTransaction: signed,
+            connection: connection,
+            sendNotification: false,
+          });
+        } catch (e) {
+          bitchQuit(e.message);
+        }
+      }
+      if (orderOk) {
+        sendTransaction(
+          txId,
 
-      sendTransaction(
-        txId,
-
-        { onSuccess: setBusy(false) },
-      );
+          { onSuccess: setBusy(false) },
+        );
+      }
       setBusy(false);
     }
   };

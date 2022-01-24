@@ -9,7 +9,8 @@ export const ACCOUNT_LAYOUT = BufferLayout.struct([
 ]);
 
 export const MINT_LAYOUT = BufferLayout.struct([
-  BufferLayout.blob(44),
+  BufferLayout.blob(36),
+  BufferLayout.nu64('supply'),
   BufferLayout.u8('decimals'),
   BufferLayout.blob(37),
 ]);
@@ -24,8 +25,8 @@ export function parseTokenAccountData(data) {
 }
 
 export function parseMintData(data) {
-  let { decimals } = MINT_LAYOUT.decode(data);
-  return { decimals };
+  let { supply, decimals } = MINT_LAYOUT.decode(data);
+  return { supply, decimals };
 }
 
 export function getOwnedAccountsFilters(publicKey) {

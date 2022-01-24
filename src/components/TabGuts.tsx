@@ -3,17 +3,22 @@ import Box from '@material-ui/core/Box';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import TabPanel from './TabPanel';
+import TokenInfoTable from './TokenInfoTable';
 import { makeStyles } from '@material-ui/core/styles';
 import MarketLoadButton from './MarketLoadButton';
 import { MARKETS_LIST, Market } from '@project-serum/serumx';
 import BuyPanel from './BuyPanel';
 import OrderTable from './OrderTable';
+import MyOrderTable from './MyOrderTable';
 import OrderForm from './OrderForm';
+import OrderFormV2 from './OrderFormV2';
+import MarketData from './MarketData';
 import CancelAllButton from './CancelAllButton';
 import MarketMenu from './MarketMenu';
 import { PublicKey, Keypair } from '@safecoin/web3.js';
 import { useWallet } from '../utils/wallet';
 import SERUM from '../KEYS/SERUM-2.json';
+import SettleButton from './SettleButton';
 let serum = Keypair.fromSecretKey(Buffer.from(SERUM));
 
 function MarketComponent(props) {
@@ -93,17 +98,19 @@ export default function TabGuts() {
         scrollButtons="auto"
         aria-label="scrollable auto tabs example"
       >
-        <Tab label="Item One" {...a11yProps(0)} />
+        <Tab label="Ignore" {...a11yProps(0)} />
         <Tab label="Buy Something" {...a11yProps(1)} />
         <Tab label="OrderBook" {...a11yProps(2)} />
         <Tab label="OrderForm" {...a11yProps(3)} />
-        <Tab label="Do Cancelling" {...a11yProps(4)} />
-        <Tab label="Item Six" {...a11yProps(5)} />
-        <Tab label="Item Seven" {...a11yProps(6)} />
+        <Tab label="Do Cancelling/Settling" {...a11yProps(4)} />
+        <Tab label="Token Info" {...a11yProps(5)} />
+        <Tab label="Market Info" {...a11yProps(6)} />
+        <Tab label="MyOrders" {...a11yProps(7)} />
+
       </Tabs>
     </Box>
     <TabPanel value={value} index={0}>
-      <MarketComponent market ={market} />
+      <MyOrderTable market ={market} />
     </TabPanel>
     <TabPanel value={value} index={1}>
       <BuyPanel />
@@ -112,16 +119,21 @@ export default function TabGuts() {
       <OrderTable market={market}/>
     </TabPanel>
     <TabPanel value={value} index={3}>
-      <OrderForm market={market}/>
+      <OrderFormV2 market={market}/>
     </TabPanel>
     <TabPanel value={value} index={4}>
-      <CancelAllButton/>
+    <SettleButton market={market}/>
+    <br/>
+    <CancelAllButton market={market}/>
+
     </TabPanel>
     <TabPanel value={value} index={5}>
-      Item Six
+     <TokenInfoTable/>
     </TabPanel>
     <TabPanel value={value} index={6}>
-      Item Seven
+      <MarketData market={market}/>
+    </TabPanel>
+    <TabPanel value={value} index={7}>
     </TabPanel>
   </>);
 }

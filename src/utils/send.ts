@@ -357,7 +357,7 @@ export async function getMultipleSolanaAccounts(
       lamports: any;
       data: Buffer;
     } | null = null;
-    if (res.result.value) {
+    if (account !== null) {
       const { executable, owner, lamports, data } = account;
       assert(data[1] === 'base64', "should be base64");
       value = {
@@ -369,6 +369,7 @@ export async function getMultipleSolanaAccounts(
     }
     accounts.push(value);
   }
+  console.log(accounts, " accounts");
   return {
     context: {
       slot: res.result.context.slot,

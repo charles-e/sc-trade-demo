@@ -37,20 +37,33 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function OrderTable(props) {
+export default function MyOrderTable(props) {
   const classes = useStyles();
   const wallet = useWallet();
   const connection = wallet.connection;
-  const [bidRows, setBidRows] = useState([]);
-  const [askRows, setAskRows] = useState([]);
+  const [orderRows, setOrderRows] = useState([]);
   const market = props.market;
 
   useEffect(() => {
-    let getAskRows = async () => {
+    let getOwnerRows = async () => {
       let ret = [];
       if (market != null) {
-        const askBook = await market.loadAsks(connection);
-        console.log('askBook: ' + askBook);
+        let orders = await market.loadOrdersForOwner(
+          connection,
+          wallet.publicKey,
+          100,
+        );
+        let rows = orders.map((o) => (
+          <TableRow>
+            <TableCell>{o.clientId.toString()}</TableCell>
+            <TableCell>{o.side}</TableCell>
+            <TableCell>{o.price}</TableCell>
+            <TableCell>{o.size}</TableCell>
+          </TableRow>
+        ));
+        setOrderRows(rows);
+        /*  const askBook = await market.loadAsks(connection);
+        console.log('askBook: '+askBook);
         for (const obItem of askBook.items()) {
           console.log(obItem.orderId.toString());
           let content = (
@@ -62,61 +75,26 @@ export default function OrderTable(props) {
           );
           ret.push(content);
         }
-        setAskRows(ret);
+        setAskRows(ret);*/
       }
     };
 
-    let getBidRows = async () => {
-      if (market != null) {
-        console.log('bidrows market');
-        let ret = [];
-        const bidBook = await market.loadBids(connection);
-
-        for (const obItem of bidBook.items()) {
-          console.log('bidBook: ' + bidBook);
-
-          console.log(obItem);
-          let content = (
-            <TableRow key={ret.length}>
-              <TableCell>{obItem.clientId.toString()}</TableCell>
-              <TableCell>{obItem.price}</TableCell>
-              <TableCell>{obItem.size}</TableCell>
-            </TableRow>
-          );
-          ret.push(content);
-        }
-        setBidRows(ret);
-      }
-    };
-    getAskRows();
-
-    getBidRows();
+    getOwnerRows();
   }, [market]);
 
   return (
     <div>
-      <h3>OrderBook</h3>
-      <h4>Bids</h4>
+      <h3>My Orders</h3>
       <Table>
         <TableHead>
           <TableRow>
             <TableCell>Order Id</TableCell>
+            <TableCell>Side</TableCell>
             <TableCell>Price</TableCell>
             <TableCell>Size</TableCell>
           </TableRow>
         </TableHead>
-        <TableBody>{bidRows}</TableBody>
-      </Table>
-      <h4>Asks</h4>
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell>Order Id</TableCell>
-            <TableCell>Price</TableCell>
-            <TableCell>Size</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>{askRows}</TableBody>
+        <TableBody>{orderRows}</TableBody>
       </Table>
     </div>
   );
