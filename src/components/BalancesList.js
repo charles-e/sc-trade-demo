@@ -20,6 +20,7 @@ import { abbreviateAddress } from '../utils/utils';
 import Button from '@material-ui/core/Button';
 import SendIcon from '@material-ui/icons/Send';
 import ReceiveIcon from '@material-ui/icons/WorkOutline';
+import MintIcon from '@material-ui/icons/AtmOutlined';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import AddIcon from '@material-ui/icons/Add';
@@ -31,6 +32,10 @@ import AddTokenDialog from './AddTokenDialog';
 import SendDialog from './SendDialog';
 import DepositDialog from './DepositDialog';
 import { refreshAccountInfo } from '../utils/connection';
+import { mintExisting } from '../utils/tokens';
+import { Keypair } from '@safecoin/web3.js';
+import mintAuth from '../config/boss.json';
+import { useSendTransaction } from '../utils/notifications';
 
 const balanceFormat = new Intl.NumberFormat(undefined, {
   minimumFractionDigits: 4,
@@ -38,11 +43,30 @@ const balanceFormat = new Intl.NumberFormat(undefined, {
   useGrouping: true,
 });
 
+async function mintFunToken(
+  connection,
+  wallet,
+  mint,
+  targetAccount,
+  decimals,
+  sendTransaction,
+) {
+  let auth = Keypair.fromSecretKey(Buffer.from(mintAuth));
+  let sig = await mintExisting({
+    connection: connection,
+    wallet: wallet,
+    mintAuth: auth,
+    mint: mint,
+    amount: Math.pow(10, decimals) * 100,
+    targetAccount: targetAccount,
+  });
+  sendTransaction(sig, {});
+}
+
 export default function BalancesList() {
   const wallet = useWallet();
   const [publicKeys, loaded] = useWalletPublicKeys();
   const [showAddTokenDialog, setShowAddTokenDialog] = useState(false);
-
   return (
     <Paper>
       <AppBar position="static" color="default" elevation={1}>
@@ -103,18 +127,27 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function BalanceListItem({ publicKey }) {
+  const wallet = useWallet();
   const balanceInfo = useBalanceInfo(publicKey);
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [sendDialogOpen, setSendDialogOpen] = useState(false);
   const [depositDialogOpen, setDepositDialogOpen] = useState(false);
   const [tokenInfoDialogOpen, setTokenInfoDialogOpen] = useState(false);
-
+  let [sendTransaction, sending] = useSendTransaction();
   if (!balanceInfo) {
     return <LoadingIndicator delay={0} />;
   }
 
-  let { amount, decimals, mint, tokenName, tokenSymbol, owner } = balanceInfo;
+  let {
+    amount,
+    decimals,
+    mint,
+    tokenName,
+    tokenSymbol,
+    owner,
+    mintable,
+  } = balanceInfo;
 
   return (
     <>
@@ -145,6 +178,27 @@ function BalanceListItem({ publicKey }) {
                 Token Info
               </Button>
             )}
+            {mintable === true ? (
+              <Button
+                variant="outlined"
+                color="orange"
+                startIcon={<MintIcon />}
+                onClick={() =>
+                  mintFunToken(
+                    wallet.connection,
+                    wallet,
+                    mint,
+                    publicKey,
+                    decimals,
+                    sendTransaction,
+                  )
+                }
+              >
+                Mint
+              </Button>
+            ) : (
+              <div />
+            )}
             <Button
               variant="outlined"
               color="primary"
@@ -153,6 +207,7 @@ function BalanceListItem({ publicKey }) {
             >
               Receive
             </Button>
+
             <Button
               variant="outlined"
               color="primary"

@@ -126,6 +126,33 @@ export async function createAndInitializeMint({
   return await connection.sendTransaction(transaction, signers);
 }
 
+export async function mintExisting({
+  connection,
+  wallet,
+  mintAuth, // Account for paying fees and allowed to mint new tokens
+  mint, // Account to hold token information
+  amount, // Number of tokens to issue
+  targetAccount, // Account to hold newly issued tokens
+}) {
+  let transaction = new Transaction();
+  if (amount == 0) {
+    throw "Can't mint zero tokens";
+  }
+  console.log('target: ', targetAccount.toBase58());
+  console.log('auth ', mintAuth.publicKey.toBase58());
+  transaction.add(
+    mintTo({
+      mint: mint,
+      destination: targetAccount,
+      amount,
+      mintAuthority: mintAuth.publicKey,
+    }),
+  );
+  //transaction.feePayer = wallet.publicKey;
+
+  return await connection.sendTransaction(transaction, [mintAuth]);
+}
+
 export async function createAndInitializeTokenAccount({
   connection,
   payer,
