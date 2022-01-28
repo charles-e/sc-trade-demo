@@ -63,9 +63,9 @@ export default function MyOrderTable(props) {
         ));
         setOrderRows(rows);
         /*  const askBook = await market.loadAsks(connection);
-        console.log('askBook: '+askBook);
+        
         for (const obItem of askBook.items()) {
-          console.log(obItem.orderId.toString());
+          
           let content = (
             <TableRow key={ret.length}>
               <TableCell>{obItem.clientId.toString()}</TableCell>

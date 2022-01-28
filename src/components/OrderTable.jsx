@@ -50,9 +50,8 @@ export default function OrderTable(props) {
       let ret = [];
       if (market != null) {
         const askBook = await market.loadAsks(connection);
-        console.log('askBook: ' + askBook);
+
         for (const obItem of askBook.items()) {
-          console.log(obItem.orderId.toString());
           let content = (
             <TableRow key={ret.length}>
               <TableCell>{obItem.clientId.toString()}</TableCell>
@@ -68,14 +67,10 @@ export default function OrderTable(props) {
 
     let getBidRows = async () => {
       if (market != null) {
-        console.log('bidrows market');
         let ret = [];
         const bidBook = await market.loadBids(connection);
 
         for (const obItem of bidBook.items()) {
-          console.log('bidBook: ' + bidBook);
-
-          console.log(obItem);
           let content = (
             <TableRow key={ret.length}>
               <TableCell>{obItem.clientId.toString()}</TableCell>

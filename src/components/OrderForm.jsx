@@ -50,9 +50,8 @@ export default function OrderForm(props) {
     setIsLimit(ev.target.value);
   };
   const changeTradeSide = (ev) => {
-    console.log(ev.target.checked);
     let side = ev.target.checked === true ? 'sell' : 'buy';
-    console.log(side);
+
     setTradeSide(side);
   };
 
@@ -139,7 +138,6 @@ export default function OrderForm(props) {
       let ooAccountAddr;
       let txn;
       if (ooAccounts.length == 0) {
-        console.log('will create Open Orders');
         const ooAccount = new Keypair();
         const params = {
           connection: connection,
@@ -166,7 +164,7 @@ export default function OrderForm(props) {
         clientId: new BN(Math.random()),
         openOrdersAddressKey: ooAccountAddr,
       };
-      console.log(order);
+
       try {
         const order_ix = await market.makePlaceOrderInstruction(
           connection,

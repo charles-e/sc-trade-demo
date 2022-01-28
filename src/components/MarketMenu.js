@@ -45,7 +45,6 @@ export default function MarketMenu(props) {
         }}
       >
         {MARKETS_LIST.map((market, idx) => {
-          console.log(market);
           return (
             <MenuItem
               key={market.seq}

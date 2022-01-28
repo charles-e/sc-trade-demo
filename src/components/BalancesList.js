@@ -146,7 +146,7 @@ function BalanceListItem({ publicKey }) {
     tokenName,
     tokenSymbol,
     owner,
-    mintable,
+    tokenMintable,
   } = balanceInfo;
 
   return (
@@ -178,7 +178,7 @@ function BalanceListItem({ publicKey }) {
                 Token Info
               </Button>
             )}
-            {mintable === true ? (
+            {tokenMintable === true ? (
               <Button
                 variant="outlined"
                 color="orange"

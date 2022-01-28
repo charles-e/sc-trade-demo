@@ -10,37 +10,37 @@ export const TOKENS = {
       mintAddress: 'SRmaJesFc3feD9WxoHg85oLA443b5g8G6qPnQgUvbhC',
       tokenName: 'Serum',
       tokenSymbol: 'SRM',
-      mintable: false,
+      tokenMintable: false,
     },
     {
       mintAddress: 'msmUmQ7BEftBi5DLUL5Vwk46HcMGjVNdNuAJcX8vELy',
       tokenName: 'MegaSerum',
       tokenSymbol: 'MSRM',
-      mintable: false,
+      tokenMintable: false,
     },
     {
       mintAddress: 'w11yCpEEJCCS2gnr7xSPCuTbccaLrsDnq9DUJN9qEGu',
       tokenName: 'Wally Token',
       tokenSymbol: 'WALL',
-      mintable: true,
+      tokenMintable: true,
     },
     {
       mintAddress: 'v7NACe6ZGC9TjU2bd4knm8oYULrQjZxnJDsuGGGWMtm',
       tokenName: 'V-7',
       tokenSymbol: 'VSEV',
-      mintable: true,
+      tokenMintable: true,
     },
     {
       mintAddress: 'ARA7gp3zXoTi9gzqKPW4xg5z4xwt9on7cfegCZ6VmhEm',
       tokenName: 'ARAVEL',
       tokenSymbol: 'ARA',
-      mintable: true,
+      tokenMintable: true,
     },
   ],
 };
 
 const customTokenNamesByNetwork = JSON.parse(
-  localStorage.getItem('tokenNamesZ') ?? '{}',
+  localStorage.getItem('tokenNamesQ') ?? '{}',
 );
 
 const nameUpdated = new EventEmitter();
@@ -54,7 +54,6 @@ export function useTokenName(mint) {
     return { name: null, symbol: null, mintable: false };
   }
   let mintKey = mint.toBase58();
-  console.log('mintKey ', mintKey);
 
   let info = customTokenNamesByNetwork?.[endpoint]?.[mintKey];
   if (!info) {
@@ -74,13 +73,17 @@ export function useTokenName(mint) {
 export function useUpdateTokenName() {
   const { endpoint } = useConnectionConfig();
   return useCallback(
-    function updateTokenName(mint, name, symbol) {
+    function updateTokenName(mint, name, symbol, mintable) {
       if (!customTokenNamesByNetwork[endpoint]) {
         customTokenNamesByNetwork[endpoint] = {};
       }
-      customTokenNamesByNetwork[endpoint][mint.toBase58()] = { name, symbol };
+      customTokenNamesByNetwork[endpoint][mint.toBase58()] = {
+        name,
+        symbol,
+        mintable,
+      };
       localStorage.setItem(
-        'tokenNamesZ',
+        'tokenNamesQ',
         JSON.stringify(customTokenNamesByNetwork),
       );
       nameUpdated.emit('update');

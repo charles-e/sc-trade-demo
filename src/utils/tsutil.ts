@@ -7,17 +7,12 @@ export async function getAccountKeys(connection: Connection, market: Market, use
   const quote = await market.findQuoteTokenAccountsForOwner(connection, userKey, false);
   const accounts = await market.findOpenOrdersAccountsForOwner(connection, userKey, 1000);
 
-  console.log("orders : ", accounts.length);
+  
   let order;
   if (accounts.length > 0) {
     order = accounts[0].address;
   } 
-  console.log( {
-    base: base[0].pubkey.toBase58(),
-    quote: quote[0].pubkey.toBase58(),
-    orders: order ? order.toBase58() : "null",
-    count: accounts.length
-  });
+
   return {
     base: base[0].pubkey,
     quote: quote[0].pubkey,

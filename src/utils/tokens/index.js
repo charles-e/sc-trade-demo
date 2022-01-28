@@ -138,8 +138,7 @@ export async function mintExisting({
   if (amount == 0) {
     throw "Can't mint zero tokens";
   }
-  console.log('target: ', targetAccount.toBase58());
-  console.log('auth ', mintAuth.publicKey.toBase58());
+
   transaction.add(
     mintTo({
       mint: mint,

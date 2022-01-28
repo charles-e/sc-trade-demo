@@ -30,19 +30,19 @@ interface TokenAccount {
 let prog = Keypair.fromSecretKey(
       Buffer.from(SERUM));
 
-console.log(prog.publicKey.toBase58());
+
 
 
 export default async function placeSell(connection: Connection, market: Market, wallet: Wallet) {
 
 
-  console.log("market", market.dump());
+  
   let ooAccountAddr : PublicKey;
   let signers : Keypair[] = [];
   let ooAccounts = await market.findOpenOrdersAccountsForOwner(connection, wallet.publicKey, 200);
   let txn;
   if (ooAccounts.length == 0) {
-    console.log("will create Open Orders");
+    
      const ooAccount = new Keypair();
      const params : OrdersAccountParams = {connection:connection, ownerAddress: wallet.publicKey, programId: prog.publicKey,marketAddress:market.address,newAccountAddress:ooAccount.publicKey};
       txn = await OpenOrders.makeCreateOrdersAccountTransaction(params);
@@ -55,7 +55,7 @@ export default async function placeSell(connection: Connection, market: Market, 
   }
   let owner_info = await getAccountKeys(connection,market,wallet.publicKey);
 
-  console.log("feePayer = ", wallet.publicKey.toBase58());
+  
 
   let order = {
     owner: wallet.publicKey,
@@ -73,7 +73,7 @@ export default async function placeSell(connection: Connection, market: Market, 
   txn.add(order_ix)
   txn.add(con_ix);
 
-  console.log("about to send");
+  
   await sendTransaction(
     {
       connection: connection,
