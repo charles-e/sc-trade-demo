@@ -43,7 +43,6 @@ export default function SettleButton(props) {
   const [sendTransaction, sending] = useSendTransaction();
 
   async function settleUp(e) {
-    console.log('settleUp');
     const connection = wallet.connection;
 
     let ooAccounts = await market.findOpenOrdersAccountsForOwner(
@@ -51,20 +50,18 @@ export default function SettleButton(props) {
       wallet.publicKey,
       200,
     );
-    console.log(ooAccounts);
+
     let quoteAccounts = await market.findQuoteTokenAccountsForOwner(
       connection,
       wallet.publicKey,
       false,
     );
-    console.log(quoteAccounts);
 
     let baseAccounts = await market.findBaseTokenAccountsForOwner(
       connection,
       wallet.publicKey,
       false,
     );
-    console.log(baseAccounts);
 
     let {
       transaction: txn,
@@ -96,7 +93,6 @@ export default function SettleButton(props) {
         className={classes.button}
         disabled={sending}
         onClick={(e) => {
-          console.log('settling....', e.target.id);
           settleUp(e);
         }}
       >

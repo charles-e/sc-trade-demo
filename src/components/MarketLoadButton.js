@@ -96,7 +96,6 @@ export default function MarketLoadButton(props) {
       serum.publicKey,
     );
     setMarket(market);
-    console.log(market);
   };
 
   const [marketAddr, setMarketAddr] = useState(MARKETS_LIST[0].address);

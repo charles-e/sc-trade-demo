@@ -50,9 +50,8 @@ export default function OrderFormV2(props) {
     setIsLimit(ev.target.value);
   };
   const changeTradeSide = (ev) => {
-    console.log(ev.target.checked);
     let side = ev.target.checked === true ? 'sell' : 'buy';
-    console.log(side);
+
     setTradeSide(side);
   };
 
@@ -137,7 +136,7 @@ export default function OrderFormV2(props) {
         orderType: isLimit ? 'limit' : '',
         clientId: new BN(Math.random() * 1000, 10),
       };
-      console.log(order);
+
       let poRes;
       try {
         poRes = await market.makePlaceOrderTransaction(connection, order);

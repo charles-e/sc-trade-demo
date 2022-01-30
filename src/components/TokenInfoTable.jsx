@@ -19,12 +19,10 @@ export default function TokenInfoTable(props) {
   useEffect(() => {
     async function getTokens() {
       let keys = TOKEN_MINTS_LIST.map((i) => i.address);
-      TOKEN_MINTS_LIST.map((i) => console.log(i.address.toBase58()));
       let res = await getMultipleSolanaAccounts(wallet.connection, keys);
-
       let data = [];
       let mintsObj = res.value;
-      console.log('mints: ', mintsObj);
+
       let bnBase10 = new BN('10', 10);
       for (let k in keys) {
         let mint = mintsObj[keys[k]];

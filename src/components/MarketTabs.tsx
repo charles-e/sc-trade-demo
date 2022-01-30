@@ -64,7 +64,7 @@ export default function MarketTabs() {
       let key = new PublicKey(addr);
 
       let loaded = await Market.load(wallet.connection,key,{},serum.publicKey);
-      console.log("loaded: ",loaded);
+      
 
       setMarket(loaded);
     }
@@ -81,7 +81,7 @@ export default function MarketTabs() {
   const changeMarket = async (marketKey :PublicKey)=>{
     let idx : number = addr_to_idx(marketKey)
     let loaded = await Market.load(wallet.connection,marketKey,{},serum.publicKey);
-    console.log("loaded: ",loaded);
+    
     setMarketIdx(idx);
     setMarket(loaded);
   }

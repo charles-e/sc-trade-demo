@@ -47,15 +47,9 @@ export async function sendTransaction({
     signers,
     connection,
   });
-  console.log("payer ", transaction?.feePayer?.toBase58());
-  console.log("me ", wallet.publicKey.toBase58());
-  transaction.instructions.map((i) => {
-    console.log(i.data)
-    i.keys.map(
-      (k) => { console.log({ signer: k.isSigner, key: k.pubkey.toBase58() }); })
-    console.log(i.programId.toBase58());
-  });
-  console.log("transaction signed");
+  
+
+  
   return await processSignedTransaction({
     signedTransaction,
     connection,
@@ -130,11 +124,11 @@ export async function transmitSignedTransaction({
   timeout?: number;
   sendNotification?: boolean;
 }): Promise<string> {
-  console.log(signedTransaction);
+  
   const rawTransaction = signedTransaction.serialize();
   const startTime = getUnixTs();
   if (sendNotification) {
-    console.log({ message: sendingMessage });
+    
   }
 
   return connection.sendRawTransaction(
@@ -172,7 +166,7 @@ export async function processSignedTransaction({
   });
 
 
-  console.log('Started awaiting confirmation for', txid);
+  
 
   let done = false;
 
@@ -189,7 +183,7 @@ export async function processSignedTransaction({
         await simulateTransaction(connection, signedTransaction, 'single')
       ).value;
     } catch (e) {
-      console.log(`Error`, e);
+      
       //@ts-ignore
       throw new Error(e.message);
     }
@@ -197,10 +191,10 @@ export async function processSignedTransaction({
     done = true;
   }
   if (sendNotification) {
-    console.log({ message: successMessage, type: 'success', txid });
+    
   }
 
-  console.log('Latency', txid, getUnixTs() - startTime);
+  
   return txid;
 }
 
@@ -209,7 +203,7 @@ async function awaitTransactionSignatureConfirmation(
   timeout: number,
   connection: Connection,
 ) {
-  console.log("awaitTransactionSignatureConfirmation");
+  
   let done = false;
   const result = await new Promise((resolve, reject) => {
     (async () => {
@@ -218,14 +212,14 @@ async function awaitTransactionSignatureConfirmation(
           return;
         }
         done = true;
-        console.log('Timed out for txid', txid);
+        
         reject({ timeout: true });
       }, timeout);
       try {
         connection.onSignature(
           txid,
           (result) => {
-            console.log('WS confirmed', txid, result);
+            
             done = true;
             if (result.err) {
               reject(result.err);
@@ -235,10 +229,10 @@ async function awaitTransactionSignatureConfirmation(
           },
           'processed',
         );
-        console.log('Set up WS connection', txid);
+        
       } catch (e) {
         done = true;
-        console.log('WS error in setup', txid, e);
+        
       }
       while (!done) {
         // eslint-disable-next-line no-loop-func
@@ -250,22 +244,22 @@ async function awaitTransactionSignatureConfirmation(
             const result = signatureStatuses && signatureStatuses.value[0];
             if (!done) {
               if (!result) {
-                console.log('REST null result for', txid, result);
+                
               } else if (result.err) {
-                console.log('REST error for', txid, result);
+                
                 done = true;
                 reject(result.err);
               } else if (!result.confirmations) {
-                console.log('REST no confirmations for', txid, result);
+                
               } else {
-                console.log('REST confirmation for', txid, result);
+                
                 done = true;
                 resolve(result);
               }
             }
           } catch (e) {
             if (!done) {
-              console.log('REST connection error: txid', txid, e);
+              
             }
           }
         })();
@@ -369,7 +363,7 @@ export async function getMultipleSolanaAccounts(
     }
     accounts.push(value);
   }
-  console.log(accounts, " accounts");
+  
   return {
     context: {
       slot: res.result.context.slot,
