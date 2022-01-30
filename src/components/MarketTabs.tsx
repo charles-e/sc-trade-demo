@@ -16,7 +16,7 @@ import CancelAllButton from './CancelAllButton';
 import MarketMenu from './MarketMenu';
 import { PublicKey, Keypair } from '@safecoin/web3.js';
 import { useWallet } from '../utils/wallet';
-import SERUM from '../KEYS/SERUM-2.json';
+import SERUM from '../KEYS/SERUM-3.json';
 import SettleButton from './SettleButton';
 let serum = Keypair.fromSecretKey(Buffer.from(SERUM));
 

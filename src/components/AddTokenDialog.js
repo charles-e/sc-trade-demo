@@ -53,6 +53,7 @@ export default function AddTokenDialog({ open, onClose }) {
   let [mintAddress, setMintAddress] = useState('');
   let [tokenName, setTokenName] = useState('');
   let [tokenSymbol, setTokenSymbol] = useState('');
+  let [tokenMintable, setTokenMintable] = useState(false);
   let [sendTransaction, sending] = useSendTransaction();
   const { endpoint } = useConnectionConfig();
   const popularTokens = TOKENS[endpoint];
@@ -64,11 +65,11 @@ export default function AddTokenDialog({ open, onClose }) {
     }
   }, [popularTokens]);
 
-  function onSubmit({ mintAddress, tokenName, tokenSymbol }) {
+  function onSubmit({ mintAddress, tokenName, tokenSymbol, tokenMintable }) {
     let mint = new PublicKey(mintAddress);
     sendTransaction(wallet.createTokenAccount(mint), {
       onSuccess: () => {
-        updateTokenName(mint, tokenName, tokenSymbol);
+        updateTokenName(mint, tokenName, tokenSymbol, tokenMintable);
         refreshWalletPublicKeys(wallet);
         onClose();
       },
@@ -169,6 +170,7 @@ function TokenListItem({
   tokenName,
   tokenSymbol,
   mintAddress,
+  tokenMintable,
   onSubmit,
   disabled,
 }) {
@@ -191,6 +193,7 @@ function TokenListItem({
               >
                 {tokenName ?? abbreviateAddress(mintAddress)}
                 {tokenSymbol ? ` (${tokenSymbol})` : null}
+                {tokenMintable ? ` (Mintable!)` : null}
               </Link>
             }
           />
@@ -200,7 +203,9 @@ function TokenListItem({
           type="submit"
           color="primary"
           disabled={disabled || alreadyExists}
-          onClick={() => onSubmit({ tokenName, tokenSymbol, mintAddress })}
+          onClick={() =>
+            onSubmit({ tokenName, tokenSymbol, mintAddress, tokenMintable })
+          }
         >
           {alreadyExists ? 'Added' : 'Add'}
         </Button>
