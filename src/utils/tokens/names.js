@@ -7,15 +7,15 @@ import { clusterApiUrl } from '@safecoin/web3.js';
 export const TOKENS = {
   [clusterApiUrl('devnet')]: [
     {
-      mintAddress: 'SRmaJesFc3feD9WxoHg85oLA443b5g8G6qPnQgUvbhC',
-      tokenName: 'Serum',
-      tokenSymbol: 'SRM',
+      mintAddress: 'SwAPhfpwC4GCP2CrPEotCs7UckZiLFqYFmtYUjnBkNo',
+      tokenName: 'Safe Swap',
+      tokenSymbol: 'SWAP  ',
       tokenMintable: false,
     },
     {
-      mintAddress: 'msmUmQ7BEftBi5DLUL5Vwk46HcMGjVNdNuAJcX8vELy',
-      tokenName: 'MegaSerum',
-      tokenSymbol: 'MSRM',
+      mintAddress: 'suprgLjUnosxP6Y2g48uXn3Jd1cyRmscKaRooap9Wq7',
+      tokenName: 'Super Safe Swap',
+      tokenSymbol: 'SUPR',
       tokenMintable: false,
     },
     {
